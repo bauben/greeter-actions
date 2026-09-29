@@ -13,6 +13,6 @@ class AppTest {
 
     @Test
     void greetsWorldWithoutName() {
-        assertEquals("Hallo, Welt!", App.greet(""));
+        assertEquals("Hi, Welt!", App.greet(""));
     }
 }
