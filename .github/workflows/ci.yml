@@ -42,7 +42,7 @@ jobs:
           retention-days: 5
       - name: Download artefact
         id: download
-        uses: actions/download-artifcat@v8
+        uses: actions/download-artifact@v8
         with:
           name: jar-file
       - name: Summary
