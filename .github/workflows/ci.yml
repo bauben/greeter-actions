@@ -16,6 +16,8 @@ jobs:
   build:
     name: My CI job
     runs-on: [ubuntu-latest]
+    outputs:
+      version: ${{ steps.get-version.outputs.version }}
     steps:
       - name: Get code
         uses: actions/checkout@v7
@@ -28,31 +30,38 @@ jobs:
       - name: Verify
         run: mvn -B verify
       - name: Get version
-        id: version
+        id: get-version
         run: |
           VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "::notice title=Version::greeter $VERSION gebaut"
       - name: Upload artefact
-        id: upload
+        id: upload-artefact
         uses: actions/upload-artifact@v7
         with:
           name: jar-file
           path: target/greeter.jar
           retention-days: 5
+  summary:
+    needs: build
+    name: Summary
+    runs-on: [ubuntu-latest]
+    steps:
       - name: Download artefact
-        id: download
+        id: download-artefact
         uses: actions/download-artifact@v8
         with:
           name: jar-file
-      - name: Summary
-        id: summary
+      - name: Write summary
+        id: write-summary
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
         run: |
           { 
             echo "Summary of the job"
             echo ""
             echo "| Variable | Wert |"
             echo "| -------- | ---- |"
-            echo "| Version  | ${{ steps.version.outputs.version }} |"
+            echo "| Version  | $VERSION |"
             echo "| Größe    | $(stat -c %s greeter.jar) |" 
           } >> "$GITHUB_STEP_SUMMARY"
