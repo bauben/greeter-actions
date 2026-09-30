@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 jobs:
-  ci:
+  build:
     name: My CI job
     runs-on: [ubuntu-latest]
     steps:
@@ -34,21 +34,25 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "::notice title=Version::greeter $VERSION gebaut"
       - name: Upload artefact
+        id: upload
         uses: actions/upload-artifact@v7
         with:
           name: jar-file
           path: target/greeter.jar
           retention-days: 5
-      - name: Summary
-        id: summary
+      - name: Download artefact
+        id: download
         uses: actions/download-artifcat@v8
         with:
           name: jar-file
+      - name: Summary
+        id: summary
         run: |
-          BYTES=$(stat -c %s greeter.jar)
-          echo "Summary of the job" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
-          echo "| Variable | Wert |" >> $GITHUB_STEP_SUMMARY
-          echo "| -------- | ---- |" >> $GITHUB_STEP_SUMMARY
-          echo "| Version  | ${{ needs.build.outputs.version }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Größe    | $BYTES |" >> $GITHUB_STEP_SUMMARY
+          { 
+            echo "Summary of the job"
+            echo ""
+            echo "| Variable | Wert |"
+            echo "| -------- | ---- |"
+            echo "| Version  | ${{ steps.version.outputs.version }} |"
+            echo "| Größe    | $(stat -c %s greeter.jar) |" 
+          } >> "$GITHUB_STEP_SUMMARY"
