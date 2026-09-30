@@ -29,6 +29,8 @@ jobs:
         run: mvn -B verify
       - name: Get version
         id: version
-        run: | 
-          echo "version=mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout" >> $GITHUB_OUTPUT
-          echo "::notice::greeter {version} gebaut"
+        run: 
+        run: |
+          VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "::notice title=Version::greeter $VERSION gebaut"
