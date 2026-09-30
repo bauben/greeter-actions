@@ -33,3 +33,22 @@ jobs:
           VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "::notice title=Version::greeter $VERSION gebaut"
+      - name: Upload artefact
+        uses: actions/upload-artifact@v7
+        with:
+          name: jar-file
+          path: target/greeter.jar
+          retention-days: 5
+      - name: Summary
+        id: summary
+        uses: actions/download-artifcat@v8
+        with:
+          name: jar-file
+        run: |
+          BYTES=$(stat -c %s greeter.jar)
+          echo "Summary of the job" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+          echo "| Variable | Wert |" >> $GITHUB_STEP_SUMMARY
+          echo "| -------- | ---- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Version  | ${{ needs.build.outputs.version }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Größe    | $BYTES |" >> $GITHUB_STEP_SUMMARY
