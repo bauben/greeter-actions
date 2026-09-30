@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
   pull_request:
-    types: [opened]
+    types: [opened,edited]
     branches:
       - 'main'
 
@@ -25,4 +25,10 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: maven
-      - run: mvn -B verify
+      - name: Verify
+        run: mvn -B verify
+      - name: Get version
+        id: version
+        run: | 
+          echo "version=mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout" >> $GITHUB_OUTPUT
+          echo "::notice::greeter {version} gebaut"
