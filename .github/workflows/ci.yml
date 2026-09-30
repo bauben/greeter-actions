@@ -29,7 +29,6 @@ jobs:
         run: mvn -B verify
       - name: Get version
         id: version
-        run: 
         run: |
           VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
