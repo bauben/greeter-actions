@@ -80,7 +80,7 @@ jobs:
         uses: actions/download-artifact@v8
         with:
           name: jar-file
-          path: target/greeter.jar
+          path: target
       - name: Do docker login
         id: login
         uses: docker/login-action@v4
