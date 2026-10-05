@@ -73,14 +73,13 @@ jobs:
       contents: read
       packages: write
     steps:
-      - name: Get code
-        uses: actions/checkout@v7
       - name: Download artefact
+        id: download-previous
         uses: actions/download-artifact@v8
         with:
           name: jar-file
           path: target/greeter.jar
-      - name:
+      - name: Do docker login
         id: login
         uses: docker/login-action@v4
         with:
@@ -91,13 +90,15 @@ jobs:
         id: meta
         uses: docker/metadata-action@v6
         with: 
-          images: ghcr.io/${{ github.repository_owner }}/${{ github.repository }}
+          images: ghcr.io/${{ github.repository }}
           tags: |
             type=raw,value=${{ needs.build.outputs.version }}
             type=sha
       - name: Build and push
+        id: build-and-push
         uses: docker/build-push-action@v7
         with:
+          context: target
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
