@@ -73,6 +73,8 @@ jobs:
       contents: read
       packages: write
     steps:
+      - name: Get code
+        uses: actions/checkout@v7
       - name: Download artefact
         id: download-previous
         uses: actions/download-artifact@v8
@@ -98,7 +100,7 @@ jobs:
         id: build-and-push
         uses: docker/build-push-action@v7
         with:
-          context: target
+          context: .
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
