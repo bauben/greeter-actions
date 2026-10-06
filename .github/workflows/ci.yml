@@ -12,8 +12,35 @@ permissions:
   contents: read
 
 jobs:
+  test:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        java: [21, 25]
+        os: [ubuntu-latest, windows-latest]
+        exlude:
+          - os: windows-latest
+            java: 21
+        include:
+          - os: ubuntu-latest
+            java: 25
+            primary: true
+    name: Test (${{ matrix.java }}, ${{ matrix.os }})
+    runs-on: ${{matrix.os}}
+    steps: 
+      - name: Checkout code
+        uses: actions/checkout@7
+      - name: Setup java ${{ matrix.java }}
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '${{ matrix.java }}'
+          cache: maven
+      - run: mvn -B test
   build:
-    name: My CI job
+    name: Build
+    needs: test
     runs-on: [ubuntu-latest]
     outputs:
       version: ${{ steps.get-version.outputs.version }}
@@ -104,5 +131,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
-
+  
         
