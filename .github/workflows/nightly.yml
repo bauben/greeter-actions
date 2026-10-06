@@ -43,7 +43,7 @@ jobs:
       - run: mvn -B test
   smoke-test:
     runs-on: ubuntu-latest
-    if: (github.event_name == 'schedule') || (inputs.smoke-test || 'false') == 'true'
+    if: (github.event_name == 'schedule') || (inputs.smoke-test || false) == true
     env:
       IMAGE: ghcr.io/${{ github.repository }}:${{ inputs.image-tag || '1.0.0' }}
     steps:
