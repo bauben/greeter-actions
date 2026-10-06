@@ -19,7 +19,7 @@ jobs:
       matrix:
         java: [21, 25]
         os: [ubuntu-latest, windows-latest]
-        exlude:
+        exclude:
           - os: windows-latest
             java: 21
         include:
