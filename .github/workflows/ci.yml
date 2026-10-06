@@ -38,6 +38,12 @@ jobs:
           java-version: '${{ matrix.java }}'
           cache: maven
       - run: mvn -B test
+      - if: matrix.primary
+        env:
+          JAVA: ${{ matrix.java }}
+          OS: ${{ matrix.os }}
+        run: |
+          echo "Primärer Testlauf: Java $JAVA auf $OS" >> "$GITHUB_STEP_SUMMARY"
   build:
     name: Build
     needs: test
