@@ -50,4 +50,6 @@ jobs:
       - name: Startup container
         run: docker run --name greeter -d -p 8080:8080 "$IMAGE"
       - name: Do test
-        run: curl -fsS --retry 10 --retry-all-errors --retry-delay 1 "http://localhost:8080/?name=CI"
+        run: |
+          $RESPONSE = $(curl -fsS --retry 10 --retry-all-errors --retry-delay 1 "http://localhost:8080/?name=CI")
+          test "$RESPONSE" = "Hallo, CI!"
