@@ -58,5 +58,4 @@ jobs:
       - name: Docker logs
         if: ${{ failure() }}
         run: |
-          LOGS=$(docker logs greeter)
-          echo $LOGS
+          docker logs greeter
