@@ -26,6 +26,7 @@ runs:
       env:
         GOAL: ${{ inputs.goal }}
       run: mvn -B "$GOAL"
+      shell: bash
     - name: Read projekt version
       id: getVersion
       run: |
