@@ -51,12 +51,11 @@ jobs:
         run: docker run --name greeter -d -p 8080:8080 "$IMAGE"
       - name: Do test
         id: do-test
-        continue-on-error: true
         run: |
           RESPONSE=$(curl -fsS --retry 10 --retry-all-errors --retry-delay 1 "http://localhost:8080/?name=CI")
           test "$RESPONSE" = "Hallo, CI!"
       - name: Docker logs
-        if: steps.do-test.outcome == 'failure'
+        if: ${{ failure() }}
         run: |
           LOGS=$(docker logs greeter)
           echo $LOGS
