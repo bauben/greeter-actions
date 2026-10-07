@@ -52,6 +52,7 @@ jobs:
           OS: ${{ matrix.os }}
         run: |
           echo "Primärer Testlauf: Java $JAVA auf $OS" >> "$GITHUB_STEP_SUMMARY"
+
   build:
     name: Build
     needs: test
@@ -82,6 +83,7 @@ jobs:
           name: jar-file
           path: target/greeter.jar
           retention-days: 5
+
   summary:
     needs: build
     name: Summary
@@ -105,6 +107,7 @@ jobs:
             echo "| Version  | $VERSION |"
             echo "| Größe    | $(stat -c %s greeter.jar) |" 
           } >> "$GITHUB_STEP_SUMMARY"
+
   docker:
     needs: build
     name: Create docker files
@@ -145,5 +148,11 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
+
+  smoke-test:
+    needs: [build,docker]
+    uses: ./.github/workflows/smoke-test.yml
+    with:
+      image-tag: ${{ needs.build.outputs.version }}
   
         
