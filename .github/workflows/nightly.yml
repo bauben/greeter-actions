@@ -40,7 +40,8 @@ jobs:
           distribution: temurin
           java-version: ${{ github.event_name == 'schedule' && '25' || inputs.java-version }}
           cache: maven
-      - run: mvn -B test
+      - run: mvn -B verify
+      
   smoke-test:
     runs-on: ubuntu-latest
     if: (github.event_name == 'schedule') || (inputs.smoke-test || false) == true
