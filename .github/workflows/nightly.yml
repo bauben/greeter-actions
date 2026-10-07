@@ -39,7 +39,6 @@ jobs:
         uses: ./.github/actions/maven
         with:
           java-version: ${{ github.event_name == 'schedule' && '25' || inputs.java-version }}
-          goal: 'test'
       
   smoke-test:
     if: (github.event_name == 'schedule') || (inputs.smoke-test || false) == true
