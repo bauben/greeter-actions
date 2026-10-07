@@ -21,7 +21,6 @@ runs:
         distribution: temurin
         java-version: ${{ inputs.java-version }}
         cache: maven
-      shell: bash
     - name: Run maven goal
       env:
         GOAL: ${{ inputs.goal }}
