@@ -39,13 +39,11 @@ jobs:
     steps: 
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Setup java ${{ matrix.java }}
-        uses: actions/setup-java@v6
+      - name: Run mvn action ${{ matrix.java }}
+        uses: ./.github/actions/maven
         with:
-          distribution: temurin
           java-version: '${{ matrix.java }}'
-          cache: maven
-      - run: mvn -B test
+          goal: 'test'
       - if: matrix.primary
         env:
           JAVA: ${{ matrix.java }}
@@ -58,24 +56,15 @@ jobs:
     needs: test
     runs-on: [ubuntu-latest]
     outputs:
-      version: ${{ steps.get-version.outputs.version }}
+      version: ${{ steps.runMvnAction.outputs.version }}
     steps:
       - name: Get code
         uses: actions/checkout@v7
-      - name: Setup java
-        uses: actions/setup-java@v6
+      - name: Run mvn action
+        id: runMvnAction
+        uses: ./.github/actions/maven
         with:
-          distribution: temurin
-          java-version: 21
-          cache: maven
-      - name: Verify
-        run: mvn -B verify
-      - name: Get version
-        id: get-version
-        run: |
-          VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          echo "::notice title=Version::greeter $VERSION gebaut"
+          java-version: '21'
       - name: Upload artefact
         id: upload-artefact
         uses: actions/upload-artifact@v7

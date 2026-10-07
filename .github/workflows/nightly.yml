@@ -34,13 +34,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
-      - name: Setup java
-        uses: actions/setup-java@v6
+      
+      - name: Run mvn action
+        id: runMvnAction
+        uses: ./.github/actions/maven
         with:
-          distribution: temurin
           java-version: ${{ github.event_name == 'schedule' && '25' || inputs.java-version }}
-          cache: maven
-      - run: mvn -B verify
       
   smoke-test:
     if: (github.event_name == 'schedule') || (inputs.smoke-test || false) == true
@@ -56,4 +55,4 @@ jobs:
     steps:
       - name: Schreibe in Summary
         run: |
-          "Antwort der Anwednung: $RESPONSE" >> "GITHUB_STEP_SUMMARY"
+          echo "Antwort der Anwednung: $RESPONSE" >> "$GITHUB_STEP_SUMMARY"

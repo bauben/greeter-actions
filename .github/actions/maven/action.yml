@@ -1,0 +1,35 @@
+name: Maven
+description: 'Setup java and do maven check'
+author: 'Ben'
+inputs:
+  java-version:
+    description: 'Java version to use'
+    default: '25'
+  goal:
+    description: 'The maven goal to run'
+    default: 'verify'
+outputs:
+  version:
+    description: "Die Version aus Step 3"
+    value: ${{ steps.getVersion.outputs.version }}
+runs:
+  using: "composite"
+  steps:
+    - name: Setup java
+      uses: actions/setup-java@v6
+      with:
+        distribution: temurin
+        java-version: ${{ inputs.java-version }}
+        cache: maven
+      shell: bash
+    - name: Run maven goal
+      env:
+        GOAL: ${{ inputs.goal }}
+      run: mvn -B "$GOAL"
+      shell: bash
+    - name: Read projekt version
+      id: getVersion
+      run: |
+        VERSION=$(mvn -B help:evaluate -Dexpression=project.version -q -DforceStdout)
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      shell: bash
