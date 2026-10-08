@@ -9,11 +9,11 @@ on:
       java-version:
         description: 'The Java version to use'
         required: true
-        default: 25
+        default: "25"
         type: choice
         options:
-          - 21
-          - 25
+          - "21"
+          - "25"
       smoke-test:
         description: 'Whether to run a smoke test or not'
         required: true
@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
       - name: Run mvn action
         id: runMvnAction
         uses: ./.github/actions/maven
