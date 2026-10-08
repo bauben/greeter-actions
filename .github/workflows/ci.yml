@@ -100,6 +100,9 @@ jobs:
   docker:
     needs: build
     name: Create docker files
+    environment:
+      name: production
+      url: https://github.com/${{ github.repository }}/pkgs/container/${{ github.event.repository.name }}
     runs-on: [ubuntu-latest]
     if: ${{ github.event_name == 'push' }}
     permissions:
