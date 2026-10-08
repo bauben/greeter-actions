@@ -1,0 +1,17 @@
+name: PR-Titel
+
+on:
+    pull_request:
+        branches:
+            - main
+        types: [opened, edited, synchronize, reopened]
+
+permissions: {}
+
+jobs:
+    title:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Write title into summary
+              run: | 
+                echo "PR-TItel: ${{ github.event.pull_request.title }}" >> "$GITHUB_STEP_SUMMARY"
