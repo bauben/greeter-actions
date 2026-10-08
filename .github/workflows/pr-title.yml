@@ -11,7 +11,9 @@ permissions: {}
 jobs:
     title:
         runs-on: ubuntu-latest
+        env:
+            TITLE: ${{ github.event.pull_request.title }}
         steps:
             - name: Write title into summary
               run: | 
-                echo "PR-TItel: ${{ github.event.pull_request.title }}" >> "$GITHUB_STEP_SUMMARY"
+                echo "PR-Titel: $TITLE" >> "$GITHUB_STEP_SUMMARY"
