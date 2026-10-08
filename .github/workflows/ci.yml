@@ -144,4 +144,15 @@ jobs:
     with:
       image-tag: ${{ needs.build.outputs.version }}
   
+  lint-dockerfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - id: hadolint
+        uses: ./.github/actions/hadolint
+      - if: always()
+        env:
+          FINDINGS: ${{ steps.hadolint.outputs.findings }}
+        run: |
+          echo "Hadolint: $FINDINGS Befunde" >> "$GITHUB_STEP_SUMMARY"
         
