@@ -1,0 +1,19 @@
+name: Hadolint
+description: "Hadolint für docker"
+inputs:
+  dockerfile:
+    description: "Pfad zum Dockerfile, relaiv zum Workspace"
+    default: "Dockerfile"
+    required: true
+  failure-threshold:
+    description: "Ab dieser Stufe schlägt die Action fehl."
+    default: "warning"
+outputs:
+  findings:
+    description: "Anzahl der Befunde."
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - ${{ inputs.dockerfile }}
+    - ${{ inputs.failure-threshold }}
