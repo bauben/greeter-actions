@@ -108,6 +108,9 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
+      attestations: write
+      artifact-metadata: write
     steps:
       - name: Get code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
@@ -140,6 +143,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           push: true
+      - name: Attest image
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 #4.2.2
+        with:
+          subject-digest: ${{ steps.build-and-push.outputs.digest }}
+          create-storage-record: false
+          push-to-registry: true
+
 
   smoke-test:
     needs: [build,docker]
