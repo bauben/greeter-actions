@@ -26,10 +26,11 @@ jobs:
         run: docker run --name greeter -d -p 8080:8080 "$IMAGE"
       - name: Antwort prüfen
         id: checkAnswer
-        run: |
-          RESPONSE=$(curl -fsS --retry 10 --retry-all-errors --retry-delay 1 "http://localhost:8080/?name=CI")
-          echo "response=$RESPONSE" >> "$GITHUB_OUTPUT"
-          test "$RESPONSE" = "Hallo, CI!"
+        uses: bauben/http-check-action@v1.0.2
+        with:
+          url: "http://localhost:8080/?name=CI"
+          expected: "Hallo, CI!"
+          retries: "15"
       - name: Wenn Fehler, dann docker logs
         if: ${{ failure() }}
         run: |
