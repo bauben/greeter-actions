@@ -158,5 +158,5 @@ jobs:
         env:
           FINDINGS: ${{ steps.hadolint.outputs.findings }}
         run: |
-          echo "Hadolint: $FINDINGS Befunde" >> "$GITHUB_STEP_SUMMARY"
+          echo "Hadolint: $FINDINGS Befunde." >> "$GITHUB_STEP_SUMMARY"
         
