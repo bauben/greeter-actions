@@ -28,7 +28,7 @@ jobs:
                 {
                     echo "| Wert | Inhalt |"
                     echo "| ---- | ------ |"
-                    echo "| Target | $Target |"
+                    echo "| Target | $TARGET |"
                     echo "| Event | $CI_EVENT |"
                     echo "| REF | $REF |"
                 } >> "$GITHUB_STEP_SUMMARY"
