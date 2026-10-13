@@ -1,0 +1,38 @@
+name: Remote
+run-name: Deploy nach ${{ inputs.target || github.event.client_payload.target }} druch @${{ github.actor }}
+
+on:
+    repository_dispatch:
+        types: [deploy-request]
+    workflow_dispatch:
+        inputs:
+            target:
+                default: staging
+                type: choice
+                options:
+                    - staging
+                    - production
+
+permissions: {}
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        env:
+            TARGET: ${{ inputs.target || github.event.client_payload.target }}
+            CI_EVENT: ${{ github.event_name }}
+            REF: ${{ github.ref }}
+        steps:
+            - name: Do deply
+              run: |
+                {
+                    echo "| Wert | Inhalt |"
+                    echo "| ---- | ------ |"
+                    echo "| Target | $Target |"
+                    echo "| Event | $CI_EVENT |"
+                    echo "| REF | $REF |"
+                } >> "$GITHUB_STEP_SUMMARY"
+            - name: Sleep
+              run: /
+                sleep 90
+
