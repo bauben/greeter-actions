@@ -23,10 +23,10 @@ jobs:
                 name: jar-file
                 path: ${{ runner.temp }}/jar
                 github-token: ${{ secrets.GITHUB_TOKEN }}
-                run-id: ${{ github.event.workflow_run.workflow_id }}
+                run-id: ${{ github.event.workflow_run.id }}
             - name: Write to summary
               env:
-                JARPATH: ${{ steps.download.outputs.download-path }}/greeter.jar
+                JAR: ${{ runner.temp }}/jar/greeter.jar
                 CI_SHA: ${{ github.event.workflow_run.head_sha }}
                 CI_EVENT: ${{ github.event.workflow_run.event }}
               run: |
