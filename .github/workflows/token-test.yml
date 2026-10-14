@@ -1,0 +1,31 @@
+name: Token Test
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['token-*']
+
+permissions: {}
+
+jobs:
+  trigger:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write     # Tag pushen
+      actions: write      # workflow_dispatch auslösen
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
+      - env:
+          TAG: token-${{ github.run_number }}
+        run: |
+          git tag "$TAG"
+          git push origin "$TAG"
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run remote.yml -f target=staging
+  report:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Push-Run für $GITHUB_REF_NAME" >> "$GITHUB_STEP_SUMMARY"
