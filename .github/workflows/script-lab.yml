@@ -27,13 +27,14 @@ jobs:
               with:
                 script: core.setFailed("Absichtlicher Fehler");
             - name: Fallback
+              if: ${{ steps.flaky.conclusion == 'failure' }}
               run: echo "Fallback läuft" >> "$GITHUB_STEP_SUMMARY"
             - name: Table
               env:
                 RESULT_JSON: ${{ steps.json.outputs.result }}
-                RESULT_TEXT: ${{ steps.json.outputs.result }}
+                RESULT_TEXT: ${{ steps.text.outputs.result }}
                 FLAKY_OUTCOME: ${{ steps.flaky.outcome }}
-                FLAKY_CONCLUSION: ${{ steps.json.conclusion }}
+                FLAKY_CONCLUSION: ${{ steps.flaky.conclusion }}
               run: |
                 {
                     echo "| Wert | Inhalt |"
