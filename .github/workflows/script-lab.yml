@@ -8,7 +8,6 @@ permissions: {}
 jobs:
     lab:
         runs-on: ubuntu-latest
-        continue-on-error: true
         steps:
             - name: JSON
               id: json
@@ -22,12 +21,12 @@ jobs:
                 result-encoding: string
                 script: return "greeter"
             - name: Flaky
+              continue-on-error: true
               id: flaky
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
               with:
                 script: core.setFailed("Absichtlicher Fehler");
             - name: Fallback
-              if: ${{ steps.flaky.outcome == 'failure' }}
               run: echo "Fallback läuft" >> "$GITHUB_STEP_SUMMARY"
             - name: Table
               env:
