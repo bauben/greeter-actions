@@ -26,7 +26,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/bauben/practice-repo</url>
+      <url>https://maven.pkg.github.com/bauben/greeter-actions</url>
     </repository>
   </distributionManagement>
 

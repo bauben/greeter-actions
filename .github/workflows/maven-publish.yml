@@ -20,7 +20,10 @@ jobs:
                 distribution: temurin
                 java-version: '21'
                 cache: maven
+                server-password-env-var: GITHUB_TOKEN
             - name: Deploy
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: mvn --batch-mode deploy
 
                 
