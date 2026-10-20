@@ -10,7 +10,8 @@ jobs:
     greet:
         runs-on: ubuntu-latest
         if:  ${{ github.event.issue.pull_request && startsWith(github.event.comment.body,'/greet') && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) }}
-        permissions: write-all
+        permissions:
+            contents: write
         steps:
             - name: Write
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
@@ -25,11 +26,11 @@ jobs:
                             content: 'rocket',
                         });
 
-                    const text = comment.body.replace("/greet","").trim();
+                    const text = comment.body.substring(7).trim();
                     const user = comment.user.login;
                     const body = `Hallo @${user}, du hast „${text}" geschickt.`;
                     
-                    await octokit.rest.issues.createComment({
+                    await github.rest.issues.createComment({
                             owner: issue.owner,
                             repo: issue.repo,
                             issue_number: issue.number,
