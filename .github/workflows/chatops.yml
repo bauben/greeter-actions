@@ -27,7 +27,7 @@ jobs:
                     const comment = context.payload.comment;
                     const text = comment.body.replace("/greet","").trim();
                     const user = comment.user.login;
-                    const body = `Hallo @${user}, du hast „${text}"`;
+                    const body = `Hallo @${user}, du hast „${text}" geschickt.`;
                     
                     await octokit.rest.issues.createComment({
                             owner: issue.owner,
