@@ -24,9 +24,9 @@ jobs:
                             content: 'rocket',
                         });
 
-                    const payload = context.payload;
-                    const text = payload.body.replace("/greet","").trim();
-                    const user = payload.user.login;
+                    const comment = context.payload.comment;
+                    const text = comment.body.replace("/greet","").trim();
+                    const user = comment.user.login;
                     const body = `Hallo @${user}, du hast „${text}"`;
                     
                     await octokit.rest.issues.createComment({
