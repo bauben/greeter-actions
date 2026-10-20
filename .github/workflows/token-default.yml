@@ -1,0 +1,12 @@
+name: Token Default
+
+on:
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    show:
+        runs-on: ubuntu-latest
+        steps:
+            - run: echo "ok"
