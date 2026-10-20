@@ -28,8 +28,9 @@ jobs:
                         repo: context.repo.repo,
                         pull_number: pull_number
                     })
-                    
-                    core.summary.addHeading('Labels', '1');
-                    core.summary.addRaw(`Auslöser: ${new_label}`, true);
-                    core.summary.addList(pr.data.labels.map(l => l.name),false);
-                    await core.summary.write();
+                                        
+                    await core.summary
+                     .addHeading('Labels');
+                     .addRaw(`Auslöser: ${new_label}`, true);
+                     .addList(pr.data.labels.map(l => l.name));
+                     .write();

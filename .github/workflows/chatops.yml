@@ -1,0 +1,38 @@
+name: ChatOps
+
+on:
+    issue_comment:
+        types: [created]
+
+permissions: {}
+
+jobs:
+    greet:
+        runs-on: ubuntu-latest
+        if:  ${{ github.event.issue.pull_request && startsWith(github.event.comment.body,'/greet') && contains(fromJSON('["OWNER", "MEMBER", "COLLABORATOR"]'), github.event.comment.author_association) }}
+        permissions:
+            contents: write
+        steps:
+            - name: Write
+              uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+              with:
+                script: |
+                    const issue = context.issue;
+                    await github.rest.reactions.createForIssue({
+                            owner: issue.owner,
+                            repo: issue.repo,
+                            issue_number: issue.number,
+                            content: 'rocket',
+                        });
+
+                    const payload = context.payload;
+                    const text = payload.body.replace("/greet","").trim();
+                    const user = payload.user.login;
+                    const body = `Hallo @${user}, du hast „${text}"`;
+                    
+                    await octokit.rest.issues.createComment({
+                            owner: issue.owner,
+                            repo: issue.repo,
+                            issue_number: issue.number,
+                            body: body,
+                        });
