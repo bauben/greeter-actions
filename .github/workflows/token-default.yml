@@ -3,9 +3,6 @@ name: Token Default
 on:
     workflow_dispatch:
 
-permissions:
-    issues: write
-
 jobs:
     show:
         runs-on: ubuntu-latest
