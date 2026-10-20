@@ -27,7 +27,7 @@ jobs:
                     const pull_number = process.env.PULL_NUMBER;
                     const new_label = process.env.NEW_LABEL;
 
-                    const pr = await github.rest.pulls.get({
+                    const pr = github.rest.pulls.get({
                         owner: owner,
                         repo: repo,
                         pull_number: pull_number
