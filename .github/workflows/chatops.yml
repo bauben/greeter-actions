@@ -21,7 +21,7 @@ jobs:
                     await github.rest.reactions.createForIssue({
                             owner: issue.owner,
                             repo: issue.repo,
-                            comment_id: issue.number,
+                            issue_number: issue.number,
                             content: 'rocket',
                         });
 
