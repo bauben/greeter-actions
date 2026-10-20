@@ -16,24 +16,20 @@ jobs:
             - name: GH script
               uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
               env:
-                OWNER: ${{ github.repository_owner }}
-                REPO: ${{ github.event.repository.name }}
                 PULL_NUMBER: ${{ github.event.pull_request.number }}
                 NEW_LABEL: ${{ github.event.label.name }}
               with:
                 script: |
-                    const owner = process.env.OWNER;
-                    const repo = process.env.REPO;
                     const pull_number = process.env.PULL_NUMBER;
                     const new_label = process.env.NEW_LABEL;
-
+                    
                     const pr = await github.rest.pulls.get({
-                        owner: owner,
-                        repo: repo,
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
                         pull_number: pull_number
                     })
                     
                     core.summary.addHeading('Labels', '1');
                     core.summary.addRaw(`Auslöser: ${new_label}`, true);
-                    core.summary.addList(pr.labels.map(l => l.name),false);
-                    core.summary.write();
+                    core.summary.addList(pr.data.labels.map(l => l.name),false);
+                    await core.summary.write();
