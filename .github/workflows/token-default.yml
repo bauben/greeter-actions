@@ -3,7 +3,8 @@ name: Token Default
 on:
     workflow_dispatch:
 
-permissions: {}
+permissions:
+    issues: write
 
 jobs:
     show:
