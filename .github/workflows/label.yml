@@ -37,5 +37,5 @@ jobs:
                     
                     core.summary.addHeading('Labels', '1');
                     core.summary.addRaw(`Auslöser: ${new_label}`, true);
-                    core.summary.addList(pr.labels.map(l => l.name),false);
+                    //core.summary.addList(pr.labels.map(l => l.name),false);
                     core.summary.write();
