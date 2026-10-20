@@ -26,12 +26,14 @@ jobs:
                     const repo = process.env.REPO;
                     const pull_number = process.env.PULL_NUMBER;
                     const new_label = process.env.NEW_LABEL;
-
+                    
                     const pr = github.rest.pulls.get({
                         owner: owner,
                         repo: repo,
                         pull_number: pull_number
                     })
+
+                    core.info(JSON.stringify(pr.data.labels, null, 2));
                     
                     core.summary.addHeading('Labels', '1');
                     core.summary.addRaw(`Auslöser: ${new_label}`, true);
