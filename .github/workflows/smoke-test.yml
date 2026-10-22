@@ -26,7 +26,7 @@ jobs:
         run: docker run --name greeter -d -p 8080:8080 "$IMAGE"
       - name: Antwort prüfen
         id: checkAnswer
-        uses: bauben/http-check-action@a302b9cf0273dcc16329ec2d51435a9467bf6642 #v1.0.7
+        uses: bauben/http-check-action@461d6a28b8e630cd98d9d77f98a0ed19418c442d #v1.0.8
         with:
           url: "http://localhost:8080/?name=CI"
           expected: "Hallo, CI!"
